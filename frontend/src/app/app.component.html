@@ -1,0 +1,27 @@
+<div *ngIf="orders.length" class="example-container mat-elevation-z8">
+  <mat-table [dataSource]="dataSource">
+
+      <ng-container *ngFor="let column of displayedColumns">
+        <ng-container *ngIf="column != 'actions'" [matColumnDef]=column>
+          <mat-header-cell *matHeaderCellDef> {{column.toUpperCase()}} </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row[column]}} </mat-cell>
+        </ng-container>
+      </ng-container>
+
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> ACTIONS </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <ng-container *ngIf="row.status != 'cancelled'">
+          <button mat-raised-button color="warn" (click)="onCancelOrder(row.id)">Cancel</button>
+        </ng-container>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator (page)="onPaginate($event)"  [pageSize]="10" [length]="ordersTotal" [pageSizeOptions]="[10]"></mat-paginator>
+</div>
